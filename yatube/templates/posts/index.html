@@ -4,6 +4,11 @@
   Последние обновления на сайте
 {% endblock %}
 
+<form method="get" action="{% url 'posts:search' %}">
+    <input type="text" name="keyword" placeholder="Введите ключевое слово" required>
+    <button type="submit">Найти</button>
+</form>
+
 {% block content %}
   <h1>Последние обновления на сайте</h1>
   

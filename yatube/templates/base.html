@@ -21,6 +21,10 @@
   <body>
     <header>
       {% include 'includes/header.html' %}
+          <form method="get" action="{% url 'posts:search' %}">
+        <input type="text" name="keyword" placeholder="Введите ключевое слово" required>
+        <button type="submit">Найти</button>
+    </form>
     </header>
     <main>
       <div class="container py-5">

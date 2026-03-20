@@ -1,0 +1,11 @@
+<h2>Результаты поиска по слову "{{ keyword }}"</h2>
+
+{% if results %}
+    <ul>
+        {% for post in results %}
+            <li>{{ post.text }} ({{ post.pub_date }})</li>
+        {% endfor %}
+    </ul>
+{% else %}
+    <p>Ничего не найдено.</p>
+{% endif %}

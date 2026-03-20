@@ -1,5 +1,7 @@
 from django.shortcuts import render, get_object_or_404
 from .models import Post, Group
+from django.contrib.auth.models import User
+from datetime import date
 
 def index(request):
     """Главная страница Yatube"""
@@ -29,3 +31,25 @@ def group_posts(request, slug):
         'posts': posts,
     }
     return render(request, 'posts/group_list.html', context)
+
+def search_posts(request):
+    keyword = request.GET.get('keyword', '')
+    results = []
+
+    if keyword:
+        # Получаем пользователя leo
+        try:
+            leo = User.objects.get(username='leo')
+        except User.DoesNotExist:
+            leo = None
+
+        if leo:
+            start_date = date(1854, 7, 7)
+            end_date = date(1854, 7, 21)
+            results = Post.objects.filter(
+                author=leo,
+                pub_date__range=(start_date, end_date),
+                text__icontains=keyword
+            )
+
+    return render(request, 'posts/search_results.html', {'results': results, 'keyword': keyword})

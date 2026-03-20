@@ -32,7 +32,6 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     'posts.apps.PostsConfig',  # Добавленная запись
-    'ice_cream.apps.IceCreamConfig',  # Добавленная запись
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
