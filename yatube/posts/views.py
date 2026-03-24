@@ -3,15 +3,19 @@ from .models import Post, Group
 from django.contrib.auth.models import User
 from datetime import date
 
+from django.shortcuts import render
+from .models import Post
+
 def index(request):
-    """Главная страница Yatube"""
-    # Одна строка вместо тысячи слов на SQL:
-    # в переменную posts будет сохранена выборка из 10 объектов модели Post,
-    # отсортированных по полю pub_date по убыванию (от больших значений к меньшим)
-    posts = Post.objects.order_by('-pub_date')[:10]
-    # В словаре context отправляем информацию в шаблон
+    keyword = request.GET.get('keyword', '')
+    if keyword:
+        # фильтр по наличию слова в тексте поста
+        posts = Post.objects.filter(text__icontains=keyword).select_related('author', 'group')
+    else:
+        posts = Post.objects.all().select_related('author', 'group')
     context = {
         'posts': posts,
+        'keyword': keyword,
     }
     return render(request, 'posts/index.html', context)
 

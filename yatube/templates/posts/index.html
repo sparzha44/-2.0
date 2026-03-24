@@ -4,10 +4,22 @@
   Последние обновления на сайте
 {% endblock %}
 
-<form method="get" action="{% url 'posts:search' %}">
-    <input type="text" name="keyword" placeholder="Введите ключевое слово" required>
-    <button type="submit">Найти</button>
-</form>
+    <h1>Поиск постов</h1>
+    <form method="get" action="">
+        <input type="text" name="keyword" value="{{ keyword }}" placeholder="Введите слово для поиска..." />
+        <button type="submit">Искать</button>
+    </form>
+
+    <h2>Результаты</h2>
+    {% for post in posts %}
+        <div style="margin-bottom: 20px;">
+            <p><strong>Автор:</strong> {{ post.author.username }}</p>
+            <p><strong>Группа:</strong> {{ post.group.name }}</p>
+            <p>{{ post.text }}</p>
+        </div>
+    {% empty %}
+        <p>Нет подходящих постов.</p>
+    {% endfor %}
 
 {% block content %}
   <h1>Последние обновления на сайте</h1>

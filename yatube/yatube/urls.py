@@ -20,4 +20,5 @@ urlpatterns = [
     # импорт правил из приложения posts
     path('', include('posts.urls', namespace='posts')),  # Добавлен namespace
     path('admin/', admin.site.urls),
+    path('auth/', include('django.contrib.auth.urls')),
 ]
