@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Профайл пользователя {{ author.username }}{% endblock %}
+
+{% block content %}
+<div class="row mt-4">
+  <div class="col-md-8">
+    <h1>Все посты пользователя {{ author.username }}</h1>
+    <h3>Всего постов: {{ post_count }}</h3>
+
+    {% for post in page_obj %}
+      <article class="mb-4">
+        <ul class="list-unstyled">
+          <li>
+            Автор: <strong>{{ post.author.username }}</strong>
+            <a href="{% url 'posts:profile' post.author.username %}">все посты пользователя</a>
+          </li>
+          <li>
+            Дата публикации: <em>{{ post.pub_date|date:"d E Y" }}</em>
+          </li>
+          {% if post.group %}
+            <li>
+              Группа: <a href="{% url 'posts:group_list' post.group.slug %}">{{ post.group.title }}</a>
+            </li>
+          {% endif %}
+        </ul>
+        <p>{{ post.text }}</p>
+        <a href="{% url 'posts:post_detail' post.id %}">подробнее</a>
+      </article>
+      <hr>
+    {% empty %}
+      <p>У этого пользователя еще нет постов.</p>
+    {% endfor %}
+
+    <!-- Паджинатор -->
+    {% include 'posts/includes/paginator.html' %}
+  </div>
+
+  <div class="col-md-4">
+    <div class="card">
+      <div class="card-body">
+        <h5 class="card-title">{{ author.username }}</h5>
+        <p class="card-text">
+          <strong>Всего постов:</strong> {{ post_count }}
+        </p>
+        {% if author.first_name or author.last_name %}
+          <p class="card-text">
+            <strong>Имя:</strong> {{ author.first_name }} {{ author.last_name }}
+          </p>
+        {% endif %}
+        {% if author.email %}
+          <p class="card-text">
+            <strong>Email:</strong> <a href="mailto:{{ author.email }}">{{ author.email }}</a>
+          </p>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

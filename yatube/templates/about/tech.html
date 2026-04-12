@@ -1,0 +1,179 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Технологии{% endblock %}
+
+{% block content %}
+<div class="row mt-4">
+  <h1 class="mb-4">Вот что я умею</h1>
+
+  <!-- Боковой блок со списком технологий -->
+  <aside class="col-12 col-md-3">
+    <div class="card sticky-top" style="top: 20px;">
+      <div class="card-header bg-primary text-white">
+        <h5 class="mb-0">📚 Технологии</h5>
+      </div>
+      <ul class="list-group list-group-flush">
+        <li class="list-group-item">
+          <strong>Backend</strong>
+          <ul class="small mt-2 mb-0">
+            <li>✓ Python 3.9+</li>
+            <li>✓ Django 4.2</li>
+            <li>✓ Django Rest Framework</li>
+            <li>✓ Celery</li>
+            <li>✓ PostgreSQL</li>
+            <li>✓ SQLite3</li>
+          </ul>
+        </li>
+        <li class="list-group-item">
+          <strong>Frontend</strong>
+          <ul class="small mt-2 mb-0">
+            <li>✓ HTML5</li>
+            <li>✓ CSS3</li>
+            <li>✓ Bootstrap 5</li>
+            <li>✓ JavaScript (базовый)</li>
+          </ul>
+        </li>
+        <li class="list-group-item">
+          <strong>DevOps & Tools</strong>
+          <ul class="small mt-2 mb-0">
+            <li>✓ Git & GitHub</li>
+            <li>✓ Docker</li>
+            <li>✓ Linux</li>
+            <li>✓ VS Code</li>
+            <li>✓ Pytest</li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+  </aside>
+
+  <!-- Основной контент -->
+  <article class="col-12 col-md-9">
+    <h2 class="mb-3">О проекте Yatube</h2>
+    
+    <div class="alert alert-info" role="alert">
+      <strong>💡 Yatube</strong> — это социальная сеть для блогеров, построенная с использованием Django. Проект демонстрирует основные концепции веб-разработки: работу с БД, аутентификацию, пагинацию и работу с контекст-процессорами.
+    </div>
+
+    <h3 class="mt-4">🏗️ Архитектура приложения</h3>
+    <p>
+      Приложение структурировано по принципу разделения ответственности:
+    </p>
+    <ul>
+      <li><strong>posts</strong> — основная функциональность: создание постов, группы, поиск</li>
+      <li><strong>users</strong> — управление аккаунтами, аутентификация, восстановление пароля</li>
+      <li><strong>core</strong> — общие компоненты: контекст-процессоры, кастомные фильтры</li>
+      <li><strong>about</strong> — статичные страницы информации о проекте</li>
+    </ul>
+
+    <h3 class="mt-4">🎨 Ключевые особенности реализации</h3>
+    
+    <div class="card mb-3">
+      <div class="card-header bg-light">
+        <h5 class="mb-0">✨ Классовые представления (Class-Based Views)</h5>
+      </div>
+      <div class="card-body">
+        <p>
+          Использование <code>TemplateView</code>, <code>ListView</code> и других CBV позволяет писать чистый и переиспользуемый код. Статичные страницы (Об авторе, Технологии) реализованы именно с помощью <code>TemplateView</code>.
+        </p>
+      </div>
+    </div>
+
+    <div class="card mb-3">
+      <div class="card-header bg-light">
+        <h5 class="mb-0">🔐 Система аутентификации и авторизации</h5>
+      </div>
+      <div class="card-body">
+        <p>
+          Использован встроенный Django User model. Для защиты view-функций применяется декоратор <code>@login_required</code> — это замыкание, которое проверяет аутентификацию пользователя перед выполнением функции.
+        </p>
+        <p class="mb-0">
+          <strong>Замыкание</strong> — это функция, которая "помнит" переменные из своей внешней области видимости. Декоратор и его внутренняя функция-обёртка образуют замыкание.
+        </p>
+      </div>
+    </div>
+
+    <div class="card mb-3">
+      <div class="card-header bg-light">
+        <h5 class="mb-0">📄 Пагинация (Paginator)</h5>
+      </div>
+      <div class="card-body">
+        <p>
+          Реализована постраничная навигация с показом 10 постов на странице. Django <code>Paginator</code> автоматически обрабатывает:
+        </p>
+        <ul class="mb-0">
+          <li>Разделение данных на страницы</li>
+          <li>Проверку существования страницы</li>
+          <li>Навигацию между страницами</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="card mb-3">
+      <div class="card-header bg-light">
+        <h5 class="mb-0">🌐 Контекст-процессоры</h5>
+      </div>
+      <div class="card-body">
+        <p>
+          Создана функция <code>year()</code> в <code>core/context_processors/year.py</code>, которая автоматически добавляет переменную <code>{{ year }}</code> во все шаблоны. Это позволяет избежать дублирования кода в каждой view-функции.
+        </p>
+        <p class="mb-0">
+          Контекст-процессор вызывается при каждом запросе, перед рендерингом шаблона.
+        </p>
+      </div>
+    </div>
+
+    <div class="card mb-3">
+      <div class="card-header bg-light">
+        <h5 class="mb-0">🎯 Кастомные фильтры шаблонов</h5>
+      </div>
+      <div class="card-body">
+        <p>
+          Реализован фильтр <code>highlight</code> для выделения найденных в поиске слов. Фильтр использует регулярные выражения для поиска и замены текста.
+        </p>
+        <p class="text-muted">
+          Техника: <code>{% load highlight %}</code> в шаблон, затем <code>{{ text|highlight:"keyword"|safe }}</code>
+        </p>
+      </div>
+    </div>
+
+    <h3 class="mt-4">💾 Структура БД</h3>
+    <p>
+      Проект использует SQLite3 для разработки. Основные модели:
+    </p>
+    <ul>
+      <li><strong>Post</strong> — запись в блоге (автор, текст, дата, группа)</li>
+      <li><strong>Group</strong> — категория постов</li>
+      <li><strong>User</strong> — встроенная модель Django для пользователей</li>
+    </ul>
+
+    <h3 class="mt-4">🚀 Что я узнал</h3>
+    <p>
+      Разработка этого проекта помогла мне глубже разобраться в:
+    </p>
+    <ul>
+      <li>Жизненном цикле Django-запроса (request → middleware → view → middleware → response)</li>
+      <li>Декораторах и замыканиях в Python</li>
+      <li>Контекст-процессорах и их применении</li>
+      <li>Пагинации и оптимизации запросов</li>
+      <li>Структурировании приложений и переиспользовании кода</li>
+      <li>Работе с шаблонами Django (наследование, include, фильтры)</li>
+    </ul>
+
+    <h3 class="mt-4">❓ Что я хотел бы улучшить</h3>
+    <ul>
+      <li>Добавить полнотекстовый поиск (PostgreSQL FTS или ElasticSearch)</li>
+      <li>Реализовать кеширование часто используемых данных (Redis)</li>
+      <li>Добавить комментарии к постам</li>
+      <li>Реализовать систему подписок</li>
+      <li>Добавить персональный feed для авторизованных пользователей</li>
+      <li>Привести API к REST стандарту</li>
+    </ul>
+
+    <div class="alert alert-success mt-4" role="alert">
+      <strong>✅ Готово к production!</strong> Проект демонстрирует, что я знаю Django на достаточном уровне и готов разрабатывать реальные приложения.
+    </div>
+  </article>
+</div>
+{% endblock %}

@@ -8,18 +8,24 @@
   <h1>{{ group.title }}</h1>
   <p>{{ group.description }}</p>
   
-  {% for post in posts %}
-    <article>
-      <ul>
+  {% for post in page_obj %}
+    <article class="mb-3">
+      <ul class="list-unstyled">
         <li>
-          Автор: {{ post.author.get_full_name }}
+          Автор: <a href="{% url 'posts:profile' post.author.username %}"><strong>{{ post.author.get_full_name }}</strong></a>
         </li>
         <li>
-          Дата публикации: {{ post.pub_date|date:"d E Y" }}
+          Дата публикации: <em>{{ post.pub_date|date:"d E Y" }}</em>
         </li>
       </ul>      
-      <p>{{ post.text }}</p>         
+      <p>{{ post.text }}</p>
+      <a href="{% url 'posts:post_detail' post.id %}">подробнее</a>
     </article>
     {% if not forloop.last %}<hr>{% endif %}
+  {% empty %}
+    <p>В этой группе пока нет постов.</p>
   {% endfor %}
+
+  <!-- Паджинатор -->
+  {% include 'posts/includes/paginator.html' %}
 {% endblock %}

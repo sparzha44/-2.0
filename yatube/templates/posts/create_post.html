@@ -1,0 +1,95 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Создать новый пост{% endblock %}
+
+{% block content %}
+<div class="row mt-4">
+  <div class="col-md-8">
+    <h1>Создать новый пост</h1>
+    
+    <form method="post" class="mt-4">
+      {% csrf_token %}
+      
+      <div class="mb-3">
+        <label for="textArea" class="form-label">Текст поста:</label>
+        <textarea 
+          class="form-control" 
+          id="textArea" 
+          name="text" 
+          rows="8"
+          placeholder="Напишите ваш пост здесь..."
+          required
+        ></textarea>
+        <small class="form-text text-muted">Поле обязательно для заполнения</small>
+      </div>
+
+      <div class="mb-3">
+        <label for="groupSelect" class="form-label">Группа (опционально):</label>
+        <select class="form-select" id="groupSelect" name="group">
+          <option value="">-- Выберите группу --</option>
+          {% for group in groups %}
+            <option value="{{ group.id }}">{{ group.title }}</option>
+          {% endfor %}
+        </select>
+        <small class="form-text text-muted">Если выберите группу, пост будет добавлен в неё</small>
+      </div>
+
+      <div class="d-grid gap-2 d-md-flex justify-content-md-start">
+        <button type="submit" class="btn btn-primary">Опубликовать</button>
+        <a href="{% url 'posts:index' %}" class="btn btn-outline-secondary">Отменить</a>
+      </div>
+    </form>
+
+    <hr class="mt-5">
+    
+    <div class="alert alert-info">
+      <h5>💡 Советы для хорошего поста:</h5>
+      <ul class="mb-0">
+        <li>Будьте понятны и четки в своём выражении</li>
+        <li>Проверяйте орфографию и пунктуацию</li>
+        <li>Выбирайте релевантную группу для лучшей видимости</li>
+        <li>Делиться своими знаниями и опытом 📚</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="col-md-4">
+    <div class="card">
+      <div class="card-body">
+        <h5 class="card-title">📝 Информация</h5>
+        <p class="card-text">
+          Здесь вы можете создать новый пост. Поделитесь своими идеями, знаниями или интересными находками с сообществом Yatube!
+        </p>
+        <hr>
+        <p class="card-text small text-muted">
+          <strong>Максимум символов:</strong> Нет ограничений
+          <br>
+          <strong>Формат:</strong> Обычный текст
+        </p>
+      </div>
+    </div>
+
+    <div class="card mt-3">
+      <div class="card-body">
+        <h5 class="card-title">📚 Доступные группы</h5>
+        <ul class="list-unstyled small">
+          {% if groups %}
+            {% for group in groups %}
+              <li>
+                <a href="{% url 'posts:group_list' group.slug %}">
+                  {{ group.title }}
+                </a>
+                <br>
+                <small class="text-muted">{{ group.description|truncatewords:5 }}</small>
+              </li>
+            {% endfor %}
+          {% else %}
+            <p class="small text-muted">Нет доступных групп</p>
+          {% endif %}
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}{{ post.text|truncatewords:5 }}{% endblock %}
+
+{% block content %}
+<div class="row mt-4">
+  <aside class="col-12 col-md-3">
+    <div class="card">
+      <ul class="list-group list-group-flush">
+        <li class="list-group-item">
+          <strong>Дата публикации:</strong>
+          <br><em>{{ post.pub_date|date:"d E Y" }}</em>
+        </li>
+        {% if post.group %}
+          <li class="list-group-item">
+            <strong>Группа:</strong>
+            <br><a href="{% url 'posts:group_list' post.group.slug %}">{{ post.group.title }}</a>
+            <br><small><a href="{% url 'posts:group_list' post.group.slug %}">все записи группы</a></small>
+          </li>
+        {% endif %}
+        <li class="list-group-item">
+          <strong>Автор:</strong>
+          <br><a href="{% url 'posts:profile' post.author.username %}">{{ post.author.username }}</a>
+        </li>
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+          <span>Всего постов автора:</span>
+          <span class="badge bg-primary rounded-pill">{{ post_count }}</span>
+        </li>
+        <li class="list-group-item">
+          <a href="{% url 'posts:profile' post.author.username %}">все посты пользователя</a>
+        </li>
+      </ul>
+    </div>
+  </aside>
+
+  <article class="col-12 col-md-9">
+    <div class="card">
+      <div class="card-body">
+        <p class="card-text">{{ post.text }}</p>
+      </div>
+    </div>
+    
+    <div class="mt-4">
+      <a href="{% url 'posts:index' %}" class="btn btn-outline-secondary">← Вернуться на главную</a>
+      {% if post.group %}
+        <a href="{% url 'posts:group_list' post.group.slug %}" class="btn btn-outline-secondary">← Все посты группы</a>
+      {% endif %}
+    </div>
+  </article>
+</div>
+{% endblock %}

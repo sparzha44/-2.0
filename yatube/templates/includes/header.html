@@ -1,9 +1,78 @@
 {% load static %}
-<nav class="navbar navbar-light" style="background-color: lightskyblue">
-  <div class="container">
-    <a class="navbar-brand" href="{% url 'posts:index' %}">
-      <img src="{% static 'img/logo.png' %}" width="30" height="30" class="d-inline-block align-top" alt="">
-      <span style="color:red">Ya</span>tube
-    </a>
-  </div>
-</nav>
+
+{% with request.resolver_match.view_name as view_name %}
+<header>
+  <nav class="navbar navbar-expand-lg navbar-light" style="background-color: lightskyblue;">
+    <div class="container">
+      <a class="navbar-brand" href="{% url 'posts:index' %}">
+        <img src="{% static 'img/logo.png' %}" width="30" height="30" class="d-inline-block align-top" alt="">
+        <span style="color:red;">Ya</span>tube
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Переключатель навигации">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <!-- Левое меню -->
+        <ul class="navbar-nav me-auto">
+          <li class="nav-item">
+            <a class="nav-link {% if view_name == 'about:author' %}active{% endif %}" 
+               href="{% url 'about:author' %}" style="color: black;">
+              Об авторе
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link {% if view_name == 'about:tech' %}active{% endif %}" 
+               href="{% url 'about:tech' %}" style="color: black;">
+              Технологии
+            </a>
+          </li>
+        </ul>
+
+        <!-- Правое меню -->
+        <ul class="navbar-nav ms-auto">
+          {% if user.is_authenticated %}
+            <!-- Пункты меню для авторизованного пользователя -->
+            <li class="nav-item">
+              <a class="nav-link {% if view_name == 'posts:create_post' %}active{% endif %}" 
+                 href="{% url 'posts:create_post' %}" style="color: black;">
+                <strong>✎ Новая запись</strong>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link {% if view_name == 'users:password_change' %}active{% endif %}" 
+                 href="{% url 'users:password_change' %}" style="color: black;">
+                Изменить пароль
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'users:logout' %}" style="color: black;">
+                Выйти
+              </a>
+            </li>
+            <li class="nav-item" style="padding-left: 10px; border-left: 1px solid #999;">
+              <span class="navbar-text" style="color: black;">
+                👤 {{ user.username }}
+              </span>
+            </li>
+          {% else %}
+            <!-- Пункты меню для не авторизованного пользователя -->
+            <li class="nav-item">
+              <a class="nav-link {% if view_name == 'users:login' %}active{% endif %}" 
+                 href="{% url 'users:login' %}" style="color: black;">
+                Войти
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link {% if view_name == 'users:signup' %}active{% endif %}" 
+                 href="{% url 'users:signup' %}" style="color: black; font-weight: bold;">
+                Регистрация
+              </a>
+            </li>
+          {% endif %}
+        </ul>
+      </div>
+    </div>
+  </nav>
+</header>
+{% endwith %}
